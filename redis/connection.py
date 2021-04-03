@@ -69,10 +69,16 @@ if HIREDIS_AVAILABLE:
     if not HIREDIS_SUPPORTS_BYTE_BUFFER:
         HIREDIS_USE_BYTE_BUFFER = False
 
-SYM_STAR = b'*'
-SYM_DOLLAR = b'$'
-SYM_CRLF = b'\r\n'
-SYM_EMPTY = b''
+# !!!SPLICE: We must convert bytes literals to Splice-aware bytes
+from django.splice.splicetypes import SpliceBytes
+# SYM_STAR = b'*'
+# SYM_DOLLAR = b'$'
+# SYM_CRLF = b'\r\n'
+# SYM_EMPTY = b''
+SYM_STAR = SpliceBytes(b'*')
+SYM_DOLLAR = SpliceBytes(b'$')
+SYM_CRLF = SpliceBytes(b'\r\n')
+SYM_EMPTY = SpliceBytes(b'')
 
 SERVER_CLOSED_CONNECTION_ERROR = "Connection closed by server."
 
