@@ -270,8 +270,11 @@ def zset_score_pairs(response, **options):
         return response
     score_cast_func = options.get('score_cast_func', float)
     it = iter(response)
-    return list(zip(it, map(score_cast_func, it)))
-
+    # !!!SPLICE: We don't want to cast the score value to float here
+    #            because we would risk taint loss. Casting will be
+    #            done at the django-redis side.
+    # return list(zip(it, map(score_cast_func, it)))
+    return list(zip(it, it))
 
 def sort_return_tuples(response, **options):
     """
