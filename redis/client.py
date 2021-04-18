@@ -1652,6 +1652,11 @@ class Redis:
         """
         if isinstance(time, datetime.timedelta):
             time = int(time.total_seconds())
+        # !!!SPLICE: To work with Redis RWLock, time might be set as None.
+        #            However, None is not acceptable in encode() in connection.py,
+        #            so we will reset None value here.
+        if time is None:
+            time = 100000   # None in RWLock means will not expire, so we set a large int value instead
         return self.execute_command('EXPIRE', name, time)
 
     def expireat(self, name, when):
