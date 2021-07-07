@@ -3438,6 +3438,35 @@ class Redis:
         """
         return self.execute_command('MODULE LIST')
 
+    # !!!SPLICE =+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+    # SPLICE SPECIFIC COMMANDS FOR EVALUATION
+    # =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+    def hadd(self, name, mapping):
+        """
+        Set any number of key-value pairs to the key ``name``. Pairs
+        are specified as a dict of keys to values.
+        """
+        if not mapping:
+            raise DataError("HADD requires at least one key/value pair")
+        pieces = []
+        for pair in mapping.items():
+            pieces.append(pair[0])
+            pieces.append(pair[1])
+        return self.execute_command('HADD', name, *pieces)
+
+    def tadd(self, name, mapping):
+        """
+        Set any number of key-value pairs to the key ``name``. Pairs
+        are specified as a dict of keys to values.
+        """
+        if not mapping:
+            raise DataError("TADD requires at least one key/value pair")
+        pieces = []
+        for pair in mapping.items():
+            pieces.append(pair[0])
+            pieces.append(pair[1])
+        return self.execute_command('TADD', name, *pieces)
+
 
 StrictRedis = Redis
 
